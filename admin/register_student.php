@@ -14,6 +14,7 @@
     $program=$_POST['program'];
     $branch=$_POST['branch'];
     $section=$_POST['section'];
+    $semester=$_POST['semester'];
     $enrollment=$_POST['enrollment'];
     $sid=$_POST['sid'];
     $phone=$_POST['phone'];
@@ -21,10 +22,36 @@
     $password=$_POST['password'];
     $password = md5($password);
 
-    $sql="INSERT INTO `multiusercontrol`.`userstudent`(`name`, `program`, `branch`, `section`, `enrollment`, `sid`, `phone`, `email`, `password`) VALUES ('$name','$program','$branch','$section','$enrollment','$sid','$phone','$email','$password')";
+    $sql = "INSERT INTO `multiusercontrol`.`userstudent`(`name`, `enrollment`, `program`, `branch`, `section`, `semester`, `sid`, `phone`, `email`, `password`) VALUES ('$name', '$enrollment', '$program','$branch','$section','$semester','$sid','$phone','$email','$password')";
 
     if($con->query($sql) == true){
         // echo"Succesfully inserted";
+        if($semester == 4 and $branch == 'Computer Science and Technology(CST)' and $program == 'Bachelor of Technology(B.TECH)'){
+            
+            $newSql= "Insert into `multiusercontrol`.`fourthsemcst`
+                SELECT enrollment, name, NULL AS algo, NULL AS pp, NULL AS toc, NULL AS at1, NULL AS ds, NULL AS algoLab, NULL AS ppLab, NULL AS at1Lab
+                FROM `multiusercontrol`.`userstudent`
+                WHERE enrollment = '$enrollment' ";
+
+            if ($con->query($newSql) === true) {
+                // echo "Data inserted into fourthsemcst table.";
+            } else {
+                echo "Error inserting data into fourthsemcst table: " . $con->error;
+            }
+        }
+        else if($semester == 6 and $branch == 'Computer Science and Technology(CST)' and $program == 'Bachelor of Technology(B.TECH)'){
+            
+            $newSql= "Insert into `multiusercontrol`.`sixthsemcst`
+                SELECT enrollment, name, NULL AS os, NULL AS cn, NULL AS swe, NULL AS crypto, NULL AS nia, NULL AS osLab, NULL AS cnLab, NULL AS sweLab
+                FROM `multiusercontrol`.`userstudent`
+                WHERE enrollment = '$enrollment' ";
+
+            if ($con->query($newSql) === true) {
+                // echo "Data inserted into fourthsemcst table.";
+            } else {
+                echo "Error inserting data into fourthsemcst table: " . $con->error;
+            }
+        }
         $insert = true;
     }
     else{
@@ -64,6 +91,13 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm control-label">Enrollment No</label>
+            <div class="col-sm">
+                <input type="text" name="enrollment" class="form-control" placeholder="Enter enrollment no" required />
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm control-label">Program</label>
             <div class="col-sm">
                 <select class="form-control" name="program" required>
@@ -80,9 +114,9 @@
             <div class="col-sm">
                 <select class="form-control" name="branch" required>
                     <option value="" selected="selected"> - select branch - </option>
-                    <option value="Computer Scinece and Technology(CST)">Computer Scinece and Technology(CST)</option>
+                    <option value="Computer Science and Technology(CST)">Computer Science and Technology(CST)</option>
                     <option value="Information Technology(IT)">Information Technology(IT)</option>
-                    <option value="Electronics and Telicomunication(ETC)">Electronics and Telicomunication(ETC)</option>
+                    <option value="Electronics and Telecommunication(ETC)">Electronics and Telecommunication(ETC)</option>
                 </select>
             </div>
         </div>
@@ -95,11 +129,12 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm control-label">Enrollment No</label>
+            <label class="col-sm control-label">Semester</label>
             <div class="col-sm">
-                <input type="text" name="enrollment" class="form-control" placeholder="Enter enrollment no" required />
+                <input type="number" name="semester" class="form-control" placeholder="Enter Semester" required />
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm control-label">SID No</label>
             <div class="col-sm">
@@ -138,7 +173,3 @@
 </body>
 
 </html>
-
-
-
-<!-- INSERT INTO `userstudent` (`id`, `name`, `program`, `branch`, `section`, `enrollment`, `sid`, `phone`, `email`, `password`, `date`) VALUES ('1', 'S Sen', 'Bachelor of Technology(B.TECH)', 'Computer Scinece and Technology(CST)', '2020-2024', '2020ABC123', '2020IIEST12345', '9999999999', 'somnath@gmail.com', 'somnath@123', current_timestamp()); -->

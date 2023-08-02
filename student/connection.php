@@ -18,13 +18,13 @@ else if (!isset($_POST['password'])){
 	exit('Please fill email and password fields!');
 }
 
-if ($stmt = $con->prepare('SELECT id, password FROM userstudent WHERE email = ?')) {
+if ($stmt = $con->prepare('SELECT enrollment, password FROM userstudent WHERE email = ?')) {
 	$stmt->bind_param('s', $_POST['email']);
     $stmt->execute();
 	$stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $password);
+        $stmt->bind_result($enrollment, $password);
         $stmt->fetch();
         // $_POST['password'] = md5($password);
         $mypassword=$_POST['password'];
@@ -35,7 +35,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM userstudent WHERE email = ?'
             $_SESSION['loggedin'] = TRUE;
             // $_SESSION['name'] = $_POST['name'];
             $_SESSION['email'] = $_POST['email'];
-            $_SESSION['id'] = $id;
+            $_SESSION['enrollment'] = $enrollment;
             header('Location:student_page.php');
          
         } 

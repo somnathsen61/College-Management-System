@@ -4,8 +4,8 @@ if(!$con){
     die('Could not Connect My Sql:' .mysql_error());
 }
    
-$id=$_GET['id'];
-$data= mysqli_query($con, "DELETE FROM userstudent WHERE id = $id");
+$enrollment=$_GET['enrollment'];
+$data= mysqli_query($con, "DELETE FROM userstudent WHERE enrollment = '$enrollment'");
 
 ?>
 <script type="text/javascript" >

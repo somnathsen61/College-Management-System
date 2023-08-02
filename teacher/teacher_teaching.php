@@ -66,7 +66,7 @@ if (!isset($_SESSION['loggedin'])) {
     <section id="content">
 
     <?php
-        $query = "select ut.*,uts.* from userteacher ut, userteachersubject uts where ut.email = uts.email AND ut.email = '$_SESSION[email]'";
+        $query = "select ut.*,uts.* from userteacher ut, teachersubject uts where ut.email = uts.email AND ut.email = '$_SESSION[email]'";
         $query_run = mysqli_query($connection,$query);
         while ($row = mysqli_fetch_assoc($query_run)) 
         {
@@ -99,14 +99,52 @@ if (!isset($_SESSION['loggedin'])) {
                         <tr>
                             <td>
                                 <ol>
-                                    <li> <a href=""><?php echo $row['pgSubject']?></a> </li>
+                                    <?php if (!empty($row['pgSubject1'])): ?>
+                                        <li><a href=""><?php echo $row['pgSubject1']; ?></a></li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($row['pgSubject2'])): ?>
+                                        <li><a href=""><?php echo $row['pgSubject2']; ?></a></li>
+                                    <?php endif; ?>
                                 </ol>
                             </td>
                             <td>
                                 <ol>
-                                    <li> <?php echo "<a  href='student_marks.php?ugSubject1=$row[ugSubject1]' >" ?> <?php echo $row['ugSubject1']?></a></li>
-                                    <li> <a  href=""> <?php echo $row['ugSubject2']?></a></li>
+                                    <!-- <li><?php echo "<a href='student_marks.php?ugSubject=$row[ugSubject1]'>$row[ugSubject1]</a>"; ?></li> -->
+                                    
+                                    <li>
+                                        <?php
+                                            $subject = $row['ugSubject1'];
+                                            $url = '';
 
+                                            if ($subject == 'Design and Analysis of Algorithm' || $subject == 'Programming Paradigms' || $subject == 'Theory of Computation' || $subject == 'Computer Architecture and Organization - I' || $subject == 'Introduction to Data Science') {
+                                                $url = 'student_marks_4th_CST.php';
+                                            } 
+                                            elseif ($subject == 'Operating Systems' || $subject == 'Data Communication and Computer Network' || $subject == 'Software Engineering' || $subject == 'Information Security and Cryptography' || $subject == 'Nature Inspired Algorithm') {
+                                                $url = 'student_marks_6th_CST.php';
+                                            }
+                                            echo "<a href='$url?ugSubject=$subject'>$subject</a>";
+                                        ?>
+                                    </li>
+
+                                    <!-- <li><a href=""><?php echo $row['ugSubject2']; ?></a></li> -->
+                                    <li>
+                                        <?php
+                                            $subject = $row['ugSubject2'];
+                                            $url = '';
+
+                                            if ($subject == 'Design and Analysis of Algorithm' || $subject == 'Programming Paradigms' || $subject == 'Theory of Computation' || $subject == 'Computer Architecture and Organization - I' || $subject == 'Introduction to Data Science') {
+                                                $url = 'student_marks_4th_CST.php';
+                                            } 
+                                            elseif ($subject == 'Operating Systems' || $subject == 'Data Communication and Computer Network' || $subject == 'Software Engineering' || $subject == 'Information Security and Cryptography' || $subject == 'Nature Inspired Algorithm') {
+                                                $url = 'student_marks_6th_CST.php';
+                                            }
+                                            echo "<a href='$url?ugSubject=$subject'>$subject</a>";
+                                        ?>
+                                    </li>
+
+                                    <?php if (!empty($row['ugSubject3'])): ?>
+                                        <li><a href=""><?php echo $row['ugSubject3']; ?></a></li>
+                                    <?php endif; ?>
                                 </ol>
                             </td>
                         </tr>

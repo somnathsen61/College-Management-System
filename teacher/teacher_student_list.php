@@ -142,7 +142,6 @@ if ($result->num_rows > 0) {
 
             while($row = $result->fetch_assoc()){
             ?>
-                    <!-- echo "<tr><td>". $row['name']."</td><td>". $row['program']. "</td><td>". $row['section']. "</td><td>". $row['enrollment']."</td><td>".$subject1."</td><td><a class='button' href='update1.php?id=$row[id]'>Update"."</td></tr>"; -->
                 <tr>
                     <td><?php echo $row['name'] ?></td>
                     <td><?php echo $row['program'] ?></td>

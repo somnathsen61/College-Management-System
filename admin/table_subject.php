@@ -3,12 +3,12 @@
 if(isset($_POST['search']))
 {
     $search = $_POST['search'];
-    $sql = "SELECT * FROM `multiusercontrol`.`userteachersubject` WHERE CONCAT(`name`,`email`) LIKE '%".$search."%'";
+    $sql = "SELECT * FROM `multiusercontrol`.`teachersubject` WHERE CONCAT(`name`,`email`) LIKE '%".$search."%'";
     $result = filterTable($sql);
     
 }
  else {
-    $sql ="SELECT * FROM `multiusercontrol`.`userteachersubject`";
+    $sql ="SELECT * FROM `multiusercontrol`.`teachersubject`";
     $result = filterTable($sql);
 }
 
@@ -53,7 +53,7 @@ function filterTable($sql)
         .button{
             position: relative;
             left:0px;
-            background-color:red;
+            background-color:green;
             border: none;
             color: black;
             padding: 10px 20px;
@@ -86,18 +86,20 @@ function filterTable($sql)
         </div>
 <table>
     <tr>
-        <th>ID</th>
         <th>Name</th>
+        <th>ID</th>
         <th>Email</th>
-        <th>PG Subject</th>
+        <th>PG Subject 1</th>
+        <th>PG Subject 2</th>
         <th>UG Subject 1</th>
         <th>UG Subject 2</th>
+        <th>UG Subject 3</th>
     </tr> 
 
     <?php
 
         while($row = mysqli_fetch_assoc($result)){
-            echo "<tr><td>". $row['SNo']. "</td><td>". $row['name']."</td><td>". $row['email']."</td><td>". $row['pgSubject']. "</td><td>". $row['ugSubject1']. "</td><td>". $row['ugSubject2']. "</td><td><a class='button' href='delete2.php?SNo=$row[SNo]'>Delete</td></tr>";
+            echo "<tr><td>". $row['name']. "</td><td>". $row['id']."</td><td>". $row['email']."</td><td>". $row['pgSubject1']. "</td><td>". $row['pgSubject2']. "</td><td>". $row['ugSubject1']. "</td><td>". $row['ugSubject2']. "</td><td>". $row['ugSubject3']. "</td><td><a class='button' href='updateSubject.php?id=$row[id]'>Update</td></tr>";
         }
         echo "</table>";
 

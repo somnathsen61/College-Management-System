@@ -3,12 +3,12 @@
 if(isset($_POST['search']))
 {
     $search = $_POST['search'];
-    $sql = "SELECT * FROM `multiusercontrol`.`fourthsemres` WHERE CONCAT(`name`,`enrollment`) LIKE '%".$search."%'";
+    $sql = "SELECT * FROM `multiusercontrol`.`fourthsemcst` WHERE CONCAT(`name`,`enrollment`) LIKE '%".$search."%'";
     $result = filterTable($sql);
     
 }
  else {
-    $sql ="SELECT * FROM `multiusercontrol`.`fourthsemres`";
+    $sql ="SELECT * FROM `multiusercontrol`.`fourthsemcst`";
     $result = filterTable($sql);
 }
 
@@ -75,8 +75,8 @@ function filterTable($sql)
     </style>
 </head>
 <body>
-    <h3>Fourth Semester Student Results</h3>
-    <form action="table_fourthsemres.php" method="post">
+    <h3>Fourth Semester CST Student Results</h3>
+    <form action="table_4thSemResCST.php" method="post">
         <div class="search">
             <div class="col-md-4" style="margin-left: auto; margin-right: 0;">
                 
@@ -101,7 +101,6 @@ function filterTable($sql)
                 <th>AlgoLab</th>
                 <th>PPLab</th>
                 <th>AT1Lab</th>
-                <th>Project</th>
                 <th>Result</th>
                 <th>Email</th>
             </tr> 
@@ -109,7 +108,7 @@ function filterTable($sql)
             <?php
 
                 while($row = mysqli_fetch_assoc($result)){
-                    echo "<tr><td>". $row['name']. "</td><td>". $row['enrollment']."</td><td>". $row['algo']. "</td><td>". $row['pp']. "</td><td>". $row['toc'].  "</td><td>". $row['at1']. "</td><td>". $row['ds']. "</td><td>". $row['algoLab']. "</td><td>". $row['ppLab']. "</td><td>". $row['at1Lab']."</td><td>". $row['project']."</td><td><a class='button' href='\project\admin\pdf\marksheet.php?enrollment=$row[enrollment]'>Print"."</td><td><a class='button' href='\project\admin\pdf\certificate.php?enrollment=$row[enrollment]'>Send</td></tr>";
+                    echo "<tr><td>". $row['name']. "</td><td>". $row['enrollment']."</td><td>". $row['algo']. "</td><td>". $row['pp']. "</td><td>". $row['toc'].  "</td><td>". $row['at1']. "</td><td>". $row['ds']. "</td><td>". $row['algoLab']. "</td><td>". $row['ppLab']. "</td><td>". $row['at1Lab']."</td><td><a class='button' href='\project\admin\pdf\marksheet.php?enrollment=$row[enrollment]'>Print"."</td><td><a class='button' href='\project\admin\pdf\certificate.php?enrollment=$row[enrollment]'>Send</td></tr>";
                 }
                 echo "</table>";
 

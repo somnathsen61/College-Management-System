@@ -7,7 +7,7 @@
 
    $con = mysqli_connect($server,$username,$password,$database);
    if(!$con){
-       die("Connection to the dats base is failed due to" . mqsqli_connect_error());
+       die("Connection to the database is failed due to" . mqsqli_connect_error());
    }
 
 ?>
@@ -19,7 +19,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Update</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="register_student.css">
@@ -27,41 +27,39 @@
 
 <body>
     <form method="post" class="form-horizontal front-page">
-        <h1>Register Student</h1>
+        <h1>Update Student Details</h1>
         <?php
             if($insert == true){
-            echo "<p class='submitted'>Your details are successfully submitted.</p>";
+            echo "<p class='submitted'>Your details are successfully Updated.</p>";
             }
         ?>
 
         <?php
-            $ids=$_GET['id'];
-            $showquery = "SELECT * FROM userstudent WHERE id=$ids";
+            $enrollmentNo=$_GET['enrollment'];
+            $showquery = "SELECT * FROM userstudent WHERE enrollment='$enrollmentNo'";
             $showdata = mysqli_query($con,$showquery) or die( mysqli_error($con));;
             $row =  mysqli_fetch_assoc($showdata);
 
         if(isset($_POST['name'])){
-            $id= $_GET['id'];
+            $enrollment= $_GET['enrollment'];
             $name=$_POST['name'];
             $program=$_POST['program'];
             $branch=$_POST['branch'];
             $section=$_POST['section'];
-            $enrollment=$_POST['enrollment'];
+            $semester=$_POST['semester'];
             $sid=$_POST['sid'];
             $phone=$_POST['phone'];
-         
-        //    $sql="INSERT INTO `multiusercontrol`.`userstudent`(`name`, `program`, `branch`, `section`, `enrollment`, `sid`, `phone`, `email`, `password`) VALUES ('$name','$program','$branch','$section','$enrollment','$sid','$phone','$email','$password')";
 
-           $sql= "UPDATE `multiusercontrol`.`userstudent` SET `id`='$id',`name`='$name',`program`='$program',`branch`='$branch',`section`='$section',`enrollment`='$enrollment',`sid`='$sid',`phone`='$phone' WHERE id=$id ";
-         
-         if($con->query($sql) == true){
-             // echo"Succesfully inserted";
-             $insert = true;
-         }
-         else{
-             echo "ERROR: $sql <br> $con->error";
-         }
-           $con->close();
+        $sql= "UPDATE `multiusercontrol`.`userstudent` SET `enrollment`='$enrollment',`name`='$name',`program`='$program',`branch`='$branch',`section`='$section', `semester`='$semester', `sid`='$sid',`phone`='$phone' WHERE enrollment= '$enrollment'";
+        
+        if($con->query($sql) == true){
+            echo "<p style='color:green; text-align:center;'>Successfully Updated</p>";
+            $insert = true;
+        }
+        else{
+            echo "ERROR: $sql <br> $con->error";
+        }
+        $con->close();
         }
         ?>
         
@@ -95,6 +93,12 @@
                 </select>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm control-label">Enrollment No</label>
+            <div class="col-sm">
+                <input type="text" name="enrollment" class="form-control" placeholder="Enter enrollment no" value="<?php echo $row['enrollment']?>" required />
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm control-label">Section</label>
@@ -104,11 +108,12 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm control-label">Enrollment No</label>
+            <label class="col-sm control-label">Semester</label>
             <div class="col-sm">
-                <input type="text" name="enrollment" class="form-control" placeholder="Enter enrollment no" value=" <?php echo $row['enrollment']?>" required />
+                <input type="text" name="semester" class="form-control" placeholder="Enter semester" value="<?php echo $row['semester']; ?>" required />
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm control-label">SID No</label>
             <div class="col-sm">
@@ -148,6 +153,3 @@
 
 </html>
 
-
-
-<!-- INSERT INTO `userstudent` (`id`, `name`, `program`, `branch`, `section`, `enrollment`, `sid`, `phone`, `email`, `password`, `date`) VALUES ('1', 'S Sen', 'Bachelor of Technology(B.TECH)', 'Computer Scinece and Technology(CST)', '2020-2024', '2020ABC123', '2020IIEST12345', '9999999999', 'somnath@gmail.com', 'somnath@123', current_timestamp()); -->

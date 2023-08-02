@@ -97,5 +97,3 @@
 </body>
 
 </html>
-
-<!-- INSERT INTO `userteacher` (`Slno`, `name`, `department`, `id`, `position`, `experience`, `phone`, `email`, `password`, `date`) VALUES ('1', 'Somnath Sen', 'Computer Scinece and Technology(CST)', 'CST06IIEST', 'Associate Professor', '5', '9999999998', 'somnath1@gmail.com', '12345', current_timestamp()); -->

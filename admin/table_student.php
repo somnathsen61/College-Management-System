@@ -3,11 +3,11 @@
 if(isset($_POST['search']))
 {
     $search = $_POST['search'];
-    $sql = "SELECT * FROM `multiusercontrol`.`userstudent` WHERE CONCAT(`name`,`branch`,`branch`) LIKE '%".$search."%'";
+    $sql = "SELECT * FROM `multiusercontrol`.`userstudent` WHERE CONCAT(`name`,`enrollment`,`branch`) LIKE '%".$search."%'";
     $result = filterTable($sql);
     
 }
- else {
+else {
     $sql ="SELECT * FROM `multiusercontrol`.`userstudent`";
     $result = filterTable($sql);
 }
@@ -81,7 +81,7 @@ function filterTable($sql)
             <div class="col-md-4" style="margin-left: auto; margin-right: 0;">
                 
                     <div class="input-group mb-3">
-                        <input type="text" name="search" value="<?php if(isset($_GET['search'])){echo $_GET['search'];} ?>" class="form-control" placeholder="Search by name,enrollment or department" >
+                        <input type="text" name="search" value="<?php if(isset($_GET['search'])){echo $_GET['search'];} ?>" class="form-control" placeholder="Search by Name, Enrollment No or Department" >
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
@@ -91,12 +91,12 @@ function filterTable($sql)
         </div>
         <table>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
+                <th>Enrollment No</th>
                 <th>Program</th>
                 <th>Branch</th>
                 <th>Section</th>
-                <th>Enrollment No</th>
+                <th>Semester</th>
                 <th>SID</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -107,7 +107,7 @@ function filterTable($sql)
             <?php
 
                 while($row = mysqli_fetch_assoc($result)){
-                    echo "<tr><td>". $row['id']. "</td><td>". $row['name']."</td><td>". $row['program']. "</td><td>". $row['branch']. "</td><td>". $row['section'].  "</td><td>". $row['enrollment']. "</td><td>". $row['sid']. "</td><td>". $row['phone']. "</td><td>". $row['email']."</td><td><a class='button' href='update1.php?id=$row[id]'>Update"."</td><td><a class='button' href='delete1.php?id=$row[id]'>Delete</td></tr>";
+                    echo "<tr><td>". $row['name']. "</td><td>". $row['enrollment']. "</td><td>". $row['program']. "</td><td>". $row['branch']. "</td><td>". $row['section']. "</td><td>". $row['semester']. "</td><td>". $row['sid']. "</td><td>". $row['phone']. "</td><td>". $row['email']."</td><td><a class='button' href='update1.php?enrollment=$row[enrollment]'>Update"."</td><td><a class='button' href='deleteStudent.php?enrollment=$row[enrollment]'>Delete</td></tr>";
                 }
                 echo "</table>";
 

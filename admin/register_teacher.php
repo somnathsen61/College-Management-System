@@ -23,7 +23,19 @@
     $sql="INSERT INTO `multiusercontrol`.`userteacher`(`name`, `department`, `id`, `position`, `experience`, `phone`, `email`, `password`) VALUES ('$name','$department','$id','$position','$experience','$phone','$email','$password')";
 
     if($con->query($sql) == true){
-        // echo"Succesfully inserted";
+        if($department == 'Computer Science and Technology(CST)'){
+            
+            $newSql= "Insert into `multiusercontrol`.`teachersubject`
+                SELECT name, id, email, NULL AS pgSubject1, NULL AS pgSubject2, NULL AS ugSubject1, NULL AS ugSubject2, NULL AS ugSubject3
+                FROM `multiusercontrol`.`userteacher`
+                WHERE id = '$id' ";
+
+            if ($con->query($newSql) === true) {
+                // echo "Data inserted into fourthsemcst table.";
+            } else {
+                echo "Error inserting data into teachersubject table: " . $con->error;
+            }
+        }
         $insert = true;
     }
     else{
@@ -66,9 +78,9 @@
             <div class="col-sm">
                 <select class="form-control" name="department" required>
                     <option value="" selected="selected"> - select branch - </option>
-                    <option value="Computer Scinece and Technology(CST)">Computer Scinece and Technology(CST)</option>
+                    <option value="Computer Science and Technology(CST)">Computer Science and Technology(CST)</option>
                     <option value="Information Technology(IT)">Information Technology(IT)</option>
-                    <option value="Electronics and Telicomunication(ETC)">Electronics and Telicomunication(ETC)</option>
+                    <option value="Electronics and Telecommunication(ETC)">Electronics and Telecommunication(ETC)</option>
                 </select>
             </div>
         </div>
@@ -131,5 +143,3 @@
 </body>
 
 </html>
-
-<!-- INSERT INTO `userteacher` (`Slno`, `name`, `department`, `id`, `position`, `experience`, `phone`, `email`, `password`, `date`) VALUES ('1', 'Somnath Sen', 'Computer Scinece and Technology(CST)', 'CST06IIEST', 'Associate Professor', '5', '9999999998', 'somnath1@gmail.com', '12345', current_timestamp()); -->

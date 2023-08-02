@@ -91,10 +91,9 @@ function filterTable($sql)
         </div>
 <table>
     <tr>
-        <th>ID</th>
         <th>Name</th>
+        <th>ID</th>
         <th>Department</th>
-        <th>SID</th>
         <th>Position</th>
         <th>Experience</th>
         <th>Phone</th>
@@ -102,9 +101,10 @@ function filterTable($sql)
     </tr> 
 
     <?php
+    
 
         while($row = mysqli_fetch_assoc($result)){
-            echo "<tr><td>". $row['id']. "</td><td>". $row['name']."</td><td>". $row['department']. "</td><td>". $row['id']. "</td><td>". $row['position'].  "</td><td>". $row['experience']. "</td><td>". $row['phone']. "</td><td>". $row['email']. "</td><td><a class='button' href='delete1.php?id=$row[id]'>Delete</td></tr>";
+            echo "<tr><td>". $row['name']. "</td><td>". $row['id']."</td><td>". $row['department']."</td><td>". $row['position'].  "</td><td>". $row['experience']. "</td><td>". $row['phone']. "</td><td>". $row['email']. "</td><td><a class='button' href='deleteTeacher.php?id=$row[id]'>Delete</td></tr>";
         }
         echo "</table>";
 

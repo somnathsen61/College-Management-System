@@ -1,4 +1,17 @@
 <?php
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+require '../config.php';
+
+
+//Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
 
 $con=mysqli_connect('localhost','root','','multiusercontrol');
 $enrollmentNo=$_GET['enrollment'];
@@ -6,51 +19,51 @@ $showquery = "SELECT * FROM userstudent WHERE enrollment='$enrollmentNo'";
 $showdata = mysqli_query($con,$showquery) or die( mysqli_error($con));;
 $row =  mysqli_fetch_assoc($showdata);
 $email=$row['email'];
+$semester = $row['semester'];
 
-$to          = $email; // addresses to email pdf to
-$from        = "somnath@gmail.com"; // address message is sent from
-$subject     = "4th Semester Marksheet"; // email subject
-$body        = "<p>Dear Student,</p><p>Your fourth Semester marksheet is attach below.Kindly look into it.<p>"; // email body
-$pdfLocation = "./certificate/".$enrollmentNo.".pdf"; // file location
-$pdfName     = $enrollmentNo.".pdf"; // pdf file name recipient will get
-$filetype    = "application/pdf"; // type
-
-// create headers and mime boundry
-$eol = PHP_EOL;
-$semi_rand     = md5(time());
-$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
-$headers       = "From: $from$eol" .
-  "MIME-Version: 1.0$eol" .
-  "Content-Type: multipart/mixed;$eol" .
-  " boundary=\"$mime_boundary\"";
-
-// add html message body
-  $message = "--$mime_boundary$eol" .
-  "Content-Type: text/html; charset=\"iso-8859-1\"$eol" .
-  "Content-Transfer-Encoding: 7bit$eol$eol" .
-  $body . $eol;
-
-// fetch pdf
-$file = fopen($pdfLocation, 'rb');
-$data = fread($file, filesize($pdfLocation));
-fclose($file);
-$pdf = chunk_split(base64_encode($data));
-
-// attach pdf to email
-$message .= "--$mime_boundary$eol" .
-  "Content-Type: $filetype;$eol" .
-  " name=\"$pdfName\"$eol" .
-  "Content-Disposition: attachment;$eol" .
-  " filename=\"$pdfName\"$eol" .
-  "Content-Transfer-Encoding: base64$eol$eol" .
-  $pdf . $eol .
-  "--$mime_boundary--";
-
-// Send the email
-if(mail($to, $subject, $message, $headers)) {
-  echo "The email sent successfully.";
+function addSuffix($number) {
+    switch ($number) {
+        case 1:
+            return $number . 'st';
+        case 2:
+            return $number . 'nd';
+        case 3:
+            return $number . 'rd';
+        default:
+            return $number . 'th';
+    }
 }
-else {
-  echo "There was an error sending the mail.";
+
+
+
+try {
+    //Server settings
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host = 'smtp.gmail.com';                             //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = GMAIL_USERNAME;                     //SMTP username
+    $mail->Password   = GMAIL_PASSWORD;                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+    //Recipients
+    $mail->setFrom(GMAIL_USERNAME, 'Somnath Sen');
+    $mail->addAddress($email);               //Name is optional
+    $mail->addReplyTo(GMAIL_USERNAME, 'Somnath Sen');
+    // $mail->addCC('cc@example.com');
+    // $mail->addBCC('bcc@example.com');
+    
+    //Attachments
+    $mail->addAttachment("./certificate/".$enrollmentNo.".pdf");         //Add attachments
+
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject =  addSuffix($semester) . " Semester Marksheet";
+    $mail->Body    = "<p>Dear Student,</p><p>Your ". addSuffix($semester) ." Semester marksheet is attach below.Kindly look into it.<p>";
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
-?>
